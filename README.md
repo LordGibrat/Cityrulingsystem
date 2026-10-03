@@ -1,49 +1,51 @@
-# Аким на 5 часов · Astana Lab
+# Mayor for 5 Hours · Astana Lab
 
-Веб-приложение на Python и Streamlit для кейса HackAlem AI: распределите **100 условных единиц**, оцените последствия для пяти условных районов и получите экспертный отчет OpenAI.
+A Python and Streamlit web application for the HackAlem AI case: distribute **100 conditional units**, assess the consequences for five conditional districts, and receive an expert OpenAI report.
 
-Игровой ситуационный центр: интерактивная карта Астаны на главном экране, HUD с казной и QoL, пять карточек районов, пять слотов решений и магазин из 14 указов. Одна игровая монета равна одной условной единице кейса; внутренние суммы и JSON сохраняют прежний формат в тенге.
+## Game Situation Center
 
-Карта и карточки районов выбирают общий район для новых указов. Три слабейших показателя и предупреждения вычисляются из отображаемого состояния «До / После»; все десять показателей скрыты в «📊 Детали района». Цвета карточек используют ту же функцию и выбранный слой, что и карта. Подписи на карте показывают число запланированных указов, включая городские во всех районах.
+Interactive Astana map on the main screen, HUD with treasury and QoL, five district cards, five decision slots, and a store with 14 decrees. One game coin equals one conditional unit of the case; internal amounts and JSON retain the previous format in tenge.
 
-Магазин показывает реальные стоимость, тип, полный эффект и лаг; подробности содержат неизменённый ID и вклад с учётом лага. Поле района видно до применения указа. Недоступные действия сопровождаются точной причиной из `validate_decisions`. Кнопка «Запустить симуляцию» повторно проверяет план и использует `simulate_decisions`. Живой прогноз доступен при пяти допустимых решениях; toast и шарики появляются только при первом явном запуске данного сценария за игровую сессию, а не при автоматическом обновлении. Синергии отображаются только при наличии в результате калькулятора.
+The map and district cards select the same district for new decrees. The three weakest indicators and warnings are calculated from the displayed “Before / After” state; all ten indicators are hidden under “📊 District Details”. Card colors use the same function and selected layer as the map. Map labels show the number of planned decrees, including city-wide ones in all districts.
 
-**Расчётная модель не изменена.** В этом проекте функцию итогового Score зовут `score_indicators` (внешнее имя `calculate_score` не используется). Датасет, цены, лаги, веса, конфликты, синергии, штраф и правила остаются в прежних `src/data.py`, `src/model.py`, `src/planner.py`.
+The store shows the actual cost, type, full effect, and lag; details contain the unchanged ID and the contribution adjusted for lag. The district field is visible before applying a decree. Unavailable actions are accompanied by the exact reason from `validate_decisions`. The “Run Simulation” button re-checks the plan and uses `simulate_decisions`. A live forecast is available with five valid decisions; the toast and confetti appear only on the first explicit launch of this scenario during the game session, not during automatic updates. Synergies are displayed only when present in the calculator result.
 
-## Быстрый запуск
+**The calculation model has not been changed.** In this project, the final Score function is called `score_indicators` (the external name `calculate_score` is not used). The dataset, prices, lags, weights, conflicts, synergies, penalty, and rules remain in the original `src/data.py`, `src/model.py`, `src/planner.py`.
 
-Симулятор изолирован в папке `astana_simulator/`. Его зависимости, настройки Streamlit, данные и тесты не требуют изменений файлов другого проекта в корне командного репозитория.
+## Quick Start
 
-Сначала перейдите из корня репозитория в папку симулятора:
+The simulator is isolated in the `astana_simulator/` folder. Its dependencies, Streamlit settings, data, and tests do not require changes to files from another project in the root of the command repository.
+
+First, move from the repository root into the simulator folder:
 
 ```powershell
 cd astana_simulator
 ```
 
-Все следующие команды выполняются внутри этой папки. Это также обеспечивает загрузку собственной темы из `.streamlit/config.toml` и отдельного файла `.env`.
+All following commands are executed inside this folder. This also ensures that its own theme from `.streamlit/config.toml` and its separate `.env` file are loaded.
 
-Проверено на **Python 3.12.14**. Зависимости закреплены в `requirements.txt`, полный снимок окружения — в `requirements-lock.txt`.
+Tested on **Python 3.12.14**. Dependencies are pinned in `requirements.txt`; the full environment snapshot is in `requirements-lock.txt`.
 
-### В подготовленном рабочем каталоге Windows
+### In the prepared Windows working directory
 
-Локальное окружение `.venv` уже создано. Выполните из корня проекта:
+The local `.venv` environment has already been created. Run from the project root:
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
 ```
 
-Откройте <http://127.0.0.1:8501>. Для расчета и просмотра графиков ключи не нужны.
+Open <http://127.0.0.1:8501>. No keys are required for calculations and chart viewing.
 
-Также можно выполнить `python -m streamlit run app.py` из папки `astana_simulator/`: этот вход запускает тот же интерфейс. Корневой `app.py` репозитория относится к другому проекту и не изменяется.
+You can also run `python -m streamlit run app.py` from the `astana_simulator/` folder: this entry point launches the same interface. The repository root `app.py` belongs to another project and is not modified.
 
-### Установка с нуля
+### Fresh installation
 
-Используйте стандартный CPython 3.12 с python.org, а не Python из MSYS2.
+Use standard CPython 3.12 from python.org, not Python from MSYS2.
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-Copy-Item .env.example .env  # только если .env еще не существует
+Copy-Item .env.example .env  # only if .env does not already exist
 .\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
 ```
 
@@ -56,155 +58,155 @@ cp -n .env.example .env
 .venv/bin/python -m streamlit run streamlit_app.py
 ```
 
-Для полного повторения проверенного окружения можно установить `requirements-lock.txt` вместо `requirements.txt`. Этот снимок включает тестовые зависимости и сделан на Windows / Python 3.12.
+For a complete reproduction of the tested environment, you can install `requirements-lock.txt` instead of `requirements.txt`. This snapshot includes test dependencies and was created on Windows / Python 3.12.
 
-## Подключение OpenAI
+## OpenAI Integration
 
-В локальном файле `.env` задайте:
+In the local `.env` file, set:
 
 ```dotenv
-OPENAI_API_KEY=ваш_ключ_OpenAI
+OPENAI_API_KEY=your_OpenAI_key
 ```
 
-Ключ OpenAI: <https://platform.openai.com/api-keys>. Доступ к модели, квоты и оплата определяются вашим аккаунтом. Не отправляйте ключ в чат и не добавляйте `.env` в Git — файл уже исключен через `.gitignore`.
+OpenAI key: <https://platform.openai.com/api-keys>. Model access, quotas, and billing are determined by your account. Do not send the key in chat or add `.env` to Git — the file is already excluded through `.gitignore`.
 
-Единственный AI-сервис — OpenAI, модель **`gpt-4o-mini`**, адрес `https://api.openai.com/v1`. Файл именно этого проекта загружается через `load_dotenv(ROOT / ".env", override=False, interpolate=False)`, затем ключ читается через **`os.getenv("OPENAI_API_KEY")`**. Ключ находится только на сервере и не выводится в браузер, экспорт или сообщения об ошибках.
+The only AI service is OpenAI, model **`gpt-4o-mini`**, endpoint `https://api.openai.com/v1`. The file for this project is loaded using `load_dotenv(ROOT / ".env", override=False, interpolate=False)`, then the key is read through **`os.getenv("OPENAI_API_KEY")`**. The key remains only on the server and is not output to the browser, exports, or error messages.
 
-После изменения `.env` перезапустите процесс Streamlit, затем нажмите «Получить AI-разбор» под результатами. Переменная окружения имеет приоритет перед `.env`. Статус «ключ задан» означает наличие значения, а не проверку доступа.
+After changing `.env`, restart the Streamlit process, then click “Get AI Analysis” below the results. The environment variable takes priority over `.env`. The “key set” status means that a value is present; it does not verify access.
 
-- По нажатию кнопки создается один `AsyncOpenAI`-клиент и один отчет.
-- OpenAI пишет сильные стороны, скрытые риски, корректировки и вердикт.
-- Модель получает только синтетические исходные данные, бюджет, результаты, дельты и вклад мер. Ключ в содержимое запроса и экспорт не попадает.
-- На HTTP-попытку установлен таймаут 25 секунд, допускается один повтор SDK. Общий предел для каждого отчета — 55 секунд.
-- Обработаны отсутствие ключа, 401/403, 404, 429, 5xx, проблемы подключения, таймауты, пустой ответ и обрыв по лимиту токенов. Ошибки не выводят необработанный текст исключений или секреты.
-- Отчеты хранятся только в текущей сессии Streamlit. Успешный отчет не запрашивается повторно при движении слайдеров или обновлении страницы внутри сессии. Изменение сценария скрывает устаревший отчет. Кнопка повторения повторяет только неудавшиеся запросы.
-- Без ключей работают настоящие расчеты, графики и экспорт; AI-текст не подменяется заготовленным отчетом.
+- One `AsyncOpenAI` client and one report are created when the button is pressed.
+- OpenAI writes strengths, hidden risks, adjustments, and a verdict.
+- The model receives only synthetic source data, the budget, results, deltas, and measure contributions. The key is not included in the request content or export.
+- An HTTP attempt has a 25-second timeout, with one SDK retry allowed. The total limit for each report is 55 seconds.
+- Missing keys, 401/403, 404, 429, 5xx, connection problems, timeouts, empty responses, and token-limit cutoffs are handled. Errors do not expose raw exception text or secrets.
+- Reports are stored only in the current Streamlit session. A successful report is not requested again when sliders are moved or the page is refreshed within the session. Changing the scenario hides the outdated report. The retry button retries only failed requests.
+- Without keys, real calculations, charts, and exports work; AI text is not replaced with a prepared report.
 
-Перезагрузка вкладки с потерей сессии удаляет кеш AI-ответов; следующий явный запрос создаст новый отчет.
+Reloading the tab and losing the session removes the AI response cache; the next explicit request creates a new report.
 
-## Стартовый обзор города
+## Initial City Overview
 
-HUD и карта сразу показывают базовый Score **52.56**, **100 монет** и пять районов. Карточки районов находятся под картой; «Управлять» выбирает район для магазина, а ссылка рядом с картой переводит к указам. «Новый сценарий» очищает планы, AI-отчёты и историю игровых уведомлений.
+The HUD and map immediately show a base Score of **52.56**, **100 coins**, and five districts. District cards are located below the map; “Manage” selects a district for the store, while the link next to the map takes you to the decrees. “New Scenario” clears plans, AI reports, and the history of game notifications.
 
-Подробный первоначальный обзор с рекомендациями сохранён в «📈 Результаты и методика» → «Исходное состояние». Данные учебные и синтетические. Критический порог показателей — строго ниже 40; диагностический порог 50 в первоначальном обзоре не меняет Score.
+The detailed initial overview with recommendations is saved under “📈 Results and Methodology” → “Initial State”. The data is educational and synthetic. The critical indicator threshold is strictly below 40; the diagnostic threshold of 50 in the initial overview does not change the Score.
 
-## Два режима
+## Two Modes
 
-Запрос на пять слайдеров отличается от правил прикрепленного каталога: в каталоге разрешены две меры в одном направлении и отсутствие мер в другом. Поэтому режимы представлены отдельно и явно подписаны.
+The five-slider request differs from the rules of the attached catalogue: the catalogue allows two measures in the same direction and no measures in the other direction. Therefore, the modes are presented separately and explicitly labeled.
 
-### Распределение бюджета — дополнительный режим
+### Budget Allocation — Additional Mode
 
-Пять слайдеров: транспорт, озеленение, социальная инфраструктура, безопасность, городской сервис. Значения от 0 до 100 ед. с шагом 1 ед. Все пять решений присутствуют; нулевое финансирование допустимо. Стартовый сценарий — по 20 ед. на направление. Есть три готовых распределения.
+Five sliders: transport, landscaping, social infrastructure, safety, and city services. Values range from 0 to 100 units in increments of 1 unit. All five decisions are present; zero funding is allowed. The starting scenario is 20 units per direction. There are three ready-made allocations.
 
-Если сумма превышает 100 ед., Score, AI-анализ и экспорт недоступны. Проверка есть и в UI, и в расчетной функции. Для сохранения расчетной модели внутренние значения и JSON используют тенге: 1 ед. = 10 млн ₸, полный бюджет — 1 млрд ₸. Интерфейс и AI-отчет используют условные единицы.
+If the total exceeds 100 units, Score, AI analysis, and export are unavailable. Validation exists both in the UI and in the calculation function. To preserve the calculation model, internal values and JSON use tenge: 1 unit = 10 million ₸, full budget = 1 billion ₸. The interface and AI report use conditional units.
 
-Для направления `s` и каждого его показателя в каждом районе:
+For direction `s` and each of its indicators in each district:
 
 ```text
-W_s = сумма весов двух показателей направления
+W_s = sum of the weights of the two indicators in the direction
 f_s = 0.35 × (1 − exp(−b_s / (B × W_s)))
 I'_dk = I_dk + (100 − I_dk) × f_s
 ```
 
-`b_s` — выделенный бюджет, `B = 1 000 000 000`. Одинаковая программа закрывает одинаковую долю дефицита во всех районах. При меньшем исходном значении абсолютный прирост больше. По мере увеличения финансирования предельная отдача снижается; нулевое финансирование не меняет показатели. Остаток средств не дает бонуса.
+`b_s` is the allocated budget, `B = 1 000 000 000`. The same program closes the same share of the deficit in all districts. With a lower initial value, the absolute increase is larger. As funding increases, marginal returns decrease; zero funding does not change indicators. Remaining funds provide no bonus.
 
-**Это авторская непрерывная учебная модель**, а не формула эффекта из каталога. Коэффициент `0.35` — допущение на горизонт двух лет, не эмпирическая оценка. Она использует исходный датасет и итоговую формулу Score из кейса. Лаги и синергии мероприятий в этом режиме не применяются.
+**This is an original continuous educational model**, not the effect formula from the catalogue. The coefficient `0.35` is an assumption for a two-year horizon, not an empirical estimate. It uses the original dataset and the final Score formula from the case. Measure lags and synergies are not applied in this mode.
 
-### Каталог мероприятий — основной режим
+### Measure Catalogue — Main Mode
 
-Полностью воспроизводит каталог из второго документа:
+Fully reproduces the catalogue from the second document:
 
-- Бюджет 100 условных единиц, или 1 млрд ₸; **1 единица = 10 млн ₸**.
-- Ровно пять уникальных мероприятий; не более двух из одного направления.
-- Для районной меры обязателен район, для городской он не задается.
-- Горизонт 8 кварталов; эффект умножается на `(8 − лаг) / 8`.
-- Синергии M1+M2, M10+M12 и M5+M6 фиксированы и применяются в районе первой меры.
-- M1 и M3 несовместимы в любом районе; M4/M7 и M5/M13 несовместимы в одном районе.
-- Отрицательный эффект M11 на T1 сохранен. Все эффекты суммируются, затем показатели ограничиваются диапазоном 0–100. Порядок выбора не влияет на результат.
-- Любое нарушение блокирует расчет и AI.
+- Budget of 100 conditional units, or 1 billion ₸; **1 unit = 10 million ₸**.
+- Exactly five unique measures; no more than two from one direction.
+- A district is mandatory for a district-level measure; it is not specified for a city-wide measure.
+- Horizon of 8 quarters; the effect is multiplied by `(8 − lag) / 8`.
+- Synergies M1+M2, M10+M12, and M5+M6 are fixed and applied in the district of the first measure.
+- M1 and M3 are incompatible in any district; M4/M7 and M5/M13 are incompatible within the same district.
+- The negative effect of M11 on T1 is preserved. All effects are summed, then indicators are clipped to the 0–100 range. Selection order does not affect the result.
+- Any violation blocks calculation and AI.
 
-Приложение открывается с пустым планом. Фильтр показывает карточки по направлениям; карточка содержит цену, лаг и эффекты. Недопустимое добавление блокируется с объяснением. Изменение района выбранной меры повторно проверяет ограничения; при конфликте сохраняется исходный район. Удалить меру можно в карточке магазина или одном из пяти слотов плана.
+The application opens with an empty plan. The filter shows cards by direction; a card contains the price, lag, and effects. Invalid additions are blocked with an explanation. Changing the district of a selected measure re-checks the constraints; in case of a conflict, the original district is retained. A measure can be removed from its store card or from one of the five plan slots.
 
-Кнопка «Загрузить пример» добавляет M7/Нура, M8/Нура, M10/Нура, M12/город, M5/Сарыарка. Этот набор стоит **95 ед.** и дает **56.54307** балла. Сработавшая синергия — M10+M12. Пока в плане меньше пяти мер, карта показывает базу, а итоговый Score, AI и экспорт недоступны.
+The “Load Example” button adds M7/Nura, M8/Nura, M10/Nura, M12/city, M5/Saryarka. This set costs **95 units** and gives **56.54307** points. The triggered synergy is M10+M12. While the plan contains fewer than five measures, the map shows the baseline, while the final Score, AI, and export are unavailable.
 
-Результаты двух режимов следует сравнивать **внутри одного режима**, поскольку модели воздействия различаются.
+The results of the two modes should be compared **within the same mode**, because the impact models differ.
 
-## Интерактивная карта Астаны
+## Interactive Map of Astana
 
-На главном экране карты показаны **Есиль, Алматы, Сарыарка, Байконур и Нура** — пять районов датасета. Карта использует настоящие контуры OpenStreetMap, сохраненные в `data/astana_districts.geojson`, и синтетические показатели кейса. Это выборка районов кейса, а не полная текущая административная карта города.
+The main-screen map shows **Yesil, Almaty, Saryarka, Baikonur, and Nura** — the five districts in the dataset. The map uses real OpenStreetMap boundaries saved in `data/astana_districts.geojson` and synthetic case indicators. This is a selection of the case districts, not the complete current administrative map of the city.
 
-- Нажатие на контур или подпись выбирает район, выделяет границу и обновляет панель с баллом и двумя самыми слабыми показателями.
-- Выбранный район подставляется в новые районные карточки. Уже добавленные меры сохраняют свои назначения.
-- Через «Перенести выбранную меру» можно назначить существующую меру выбранному району; бюджет и ограничения проверяются снова, результат пересчитывается.
-- Слои показывают районный балл, прирост к базе или наличие критических показателей. Переключатель «До / После» сравнивает состояния; в неполном плане доступна только база.
-- Масштаб меняется колесом и кнопками, карта перемещается перетаскиванием. «Весь город» возвращает исходный вид. Район также можно выбрать из списка с клавиатуры.
-- Контуры, подписи и выбор района работают без подложки. Подложка улиц CARTO требует доступа к интернету и отключается переключателем.
+- Clicking a boundary or label selects the district, highlights its border, and updates the panel with the score and two weakest indicators.
+- The selected district is inserted into new district-level cards. Already-added measures retain their assignments.
+- “Move Selected Measure” can assign an existing measure to the selected district; the budget and constraints are checked again and the result is recalculated.
+- Layers show the district score, increase from the baseline, or presence of critical indicators. The “Before / After” switch compares states; with an incomplete plan, only the baseline is available.
+- Zoom changes with the mouse wheel and buttons, and the map can be moved by dragging. “Entire City” returns to the initial view. A district can also be selected from the list using the keyboard.
+- Boundaries, labels, and district selection work without a basemap. The CARTO street basemap requires Internet access and can be disabled with the switch.
 
-Контуры © OpenStreetMap contributors, лицензия [ODbL 1.0](https://www.openstreetmap.org/copyright). Дата снимка и ссылки на исходные отношения OSM сохранены в GeoJSON. Геометрию можно обновить командой `.\.venv\Scripts\python.exe scripts/fetch_districts.py`; она обращается к Overpass API и требует интернета. Описание источников — в `data/README.md`.
+Boundaries © OpenStreetMap contributors, license [ODbL 1.0](https://www.openstreetmap.org/copyright). The snapshot date and links to the original OSM relations are stored in GeoJSON. Geometry can be updated with `\.\.venv\Scripts\python.exe scripts/fetch_districts.py`; it accesses the Overpass API and requires Internet access. Source information is in `data/README.md`.
 
-## Формула Astana Quality of Life Score
+## Astana Quality of Life Score Formula
 
-Все показатели ориентированы одинаково: больше — лучше. Веса T1, T2, E1, E2, S1, S2, B1, B2, C1, C2 соответственно:
+All indicators are oriented in the same direction: higher is better. The weights for T1, T2, E1, E2, S1, S2, B1, B2, C1, C2 respectively are:
 
 ```text
 0.10, 0.10, 0.09, 0.11, 0.11, 0.11, 0.09, 0.09, 0.10, 0.10
 
 D_d   = Σ w_k × I'_dk
 D_avg = Σ pop_d × D_d
-Ncrit = число пар (район, показатель), где I'_dk < 40
+Ncrit = number of pairs (district, indicator) where I'_dk < 40
 Score = clip(0.7 × D_avg + 0.3 × min(D_d) − Ncrit, 0, 100)
 ```
 
-Базовый результат без действий: **52.55768**, средний районный балл: **56.8624**, минимум: **49.18** в Нуре, критических значений: **2**. Пример из документа: **56.54307**. Баланс 20 ед. на направление в непрерывной модели: **64.58** после округления.
+Base result without actions: **52.55768**, average district score: **56.8624**, minimum: **49.18** in Nura, critical values: **2**. Example from the document: **56.54307**. A balance of 20 units per direction in the continuous model: **64.58** after rounding.
 
-Промежуточные вычисления не округляются. AI не задает и не меняет числовой Score. Это симуляция синтетических данных, а не прогноз реального бюджета или состояния Астаны.
+Intermediate calculations are not rounded. AI does not set or change the numerical Score. This is a simulation of synthetic data, not a forecast of the real budget or condition of Astana.
 
-## Структура
+## Structure
 
 ```text
-streamlit_app.py                    Streamlit UI, графики, состояние сессии, экспорт
-src/data.py               исходные показатели, веса, 14 мер и синергии
-src/model.py              чистые расчетные функции и валидаторы
-src/planner.py            добавление, удаление и перенос мер с проверками
-src/catalogue.py          карточки, фильтры и синхронизация выбранного района
-src/game_ui.py            игровой HUD, карточки районов, слоты и обратная связь запуска
-src/landing.py            карточки первоначального обзора
-src/geography.py          GeoJSON, цвета, подписи и разбор выбора на карте
-src/map_view.py           карта Pydeck и панель выбранного района
-src/ai.py                 безопасная загрузка ключа и отчет OpenAI
-app.py                    альтернативный вход в тот же Streamlit UI
-assets/catalogue.css      оформление каталога, плана и карты
-assets/game.css           игровая тема, адаптивная сетка и состояния карточек
-assets/landing.css        сохранённое оформление прежнего первого экрана
-assets/city-hero.svg       сохранённая панорама прежнего первого экрана
-data/                     локальные границы районов и сведения об источнике
-scripts/fetch_districts.py загрузка и сборка геометрии OSM
-.streamlit/config.toml    тема, localhost, отключенная телеметрия
-.env.example              образец настройки без секретов
-docs/case.md              копия условий кейса
-docs/dataset-source.md    копия датасета
-tests/                    расчетная модель, API-контракты и Streamlit UI
+streamlit_app.py                    Streamlit UI, charts, session state, export
+src/data.py                         original indicators, weights, 14 measures, and synergies
+src/model.py                        pure calculation functions and validators
+src/planner.py                      adding, removing, and moving measures with checks
+src/catalogue.py                    cards, filters, and selected-district synchronization
+src/game_ui.py                      game HUD, district cards, slots, and launch feedback
+src/landing.py                      initial overview cards
+src/geography.py                    GeoJSON, colors, labels, and map-selection parsing
+src/map_view.py                     Pydeck map and selected-district panel
+src/ai.py                           safe key loading and OpenAI report
+app.py                              alternative entry point to the same Streamlit UI
+assets/catalogue.css                catalogue, plan, and map styling
+assets/game.css                     game theme, responsive grid, and card states
+assets/landing.css                  preserved styling of the previous first screen
+assets/city-hero.svg                preserved panorama of the previous first screen
+data/                               local district boundaries and source information
+scripts/fetch_districts.py          downloading and assembling OSM geometry
+.streamlit/config.toml              theme, localhost, disabled telemetry
+.env.example                        configuration example without secrets
+docs/case.md                         copy of the case conditions
+docs/dataset-source.md               copy of the dataset
+tests/                               calculation model, API contracts, and Streamlit UI
 ```
 
-Приложение привязано к localhost по умолчанию. Для развертывания в контейнере можно запустить `python -m streamlit run streamlit_app.py --server.address 0.0.0.0 --server.port 8501` и передать ключи через секреты платформы как переменные окружения. Публичное размещение и управление доступом выполняются отдельно.
+The application is bound to localhost by default. For deployment in a container, you can run `python -m streamlit run streamlit_app.py --server.address 0.0.0.0 --server.port 8501` and pass keys through platform secrets as environment variables. Public hosting and access management are handled separately.
 
-## Проверка
+## Verification
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Тесты проверяют контрольные значения датасета, бюджетные границы, неверные типы, убывающую отдачу, порог `<40`, все несовместимости, отрицательные эффекты, синергии, независимость от порядка и отсутствие мутации исходных данных. API-тесты используют **реальный SDK OpenAI с локальным MockTransport**, проверяют один запрос OpenAI, формат тела, таймаут и безопасную обработку ошибок. `AppTest` проверяет каталог, слайдеры, перенос и откат конфликтной меры, сохранение планов между режимами, блокировку невалидного набора, кеширование, устаревшие отчеты и повтор отчета после ошибки. Географические тесты проверяют замкнутые контуры, расположение подписей внутри районов, соответствие цветов и чисел расчетной модели, события выбора и параметры кириллических подписей.
+Tests check dataset reference values, budget limits, invalid types, diminishing returns, the `<40` threshold, all incompatibilities, negative effects, synergies, order independence, and absence of mutation of source data. API tests use the **real OpenAI SDK with a local MockTransport**, checking one OpenAI request, body format, timeout, and safe error handling. `AppTest` checks the catalogue, sliders, moving and rolling back a conflicting measure, preserving plans between modes, blocking an invalid set, caching, stale reports, and retrying a report after an error. Geographic tests check closed boundaries, label placement inside districts, correspondence of colors and numbers to the calculation model, selection events, and parameters for Cyrillic labels.
 
-Тесты не отправляют запросы внешним сервисам и не расходуют API-квоты. Для проверки реальных AI-ответов требуются рабочий ключ и доступ сервера к OpenAI. Игровые UI-тесты дополнительно проверяют бюджет, слоты, маркеры указов, выбор района, реальные критические предупреждения, синергии, повторную валидацию запуска и отсутствие повторных уведомлений.
+Tests do not send requests to external services and do not consume API quotas. Testing real AI responses requires a working key and server access to OpenAI. Game UI tests additionally check the budget, slots, decree markers, district selection, actual critical warnings, synergies, re-validation on launch, and the absence of repeated notifications.
 
-## Источники
+## Sources
 
-- [Условия HackAlem AI](https://docs.google.com/document/d/1oDZtYnBgbcn_Ii7vleP87hkARJ2HmbXl7Cw_rsCxqpo/edit)
-- [Датасет районов, каталог и правила](https://docs.google.com/document/d/1Uc-GdGoKhDY-spu8V50-ZMm33t2CjYLP/edit)
+- [HackAlem AI Case Conditions](https://docs.google.com/document/d/1oDZtYnBgbcn_Ii7vleP87hkARJ2HmbXl7Cw_rsCxqpo/edit)
+- [District Dataset, Catalogue, and Rules](https://docs.google.com/document/d/1Uc-GdGoKhDY-spu8V50-ZMm33t2CjYLP/edit)
 - [OpenAI GPT-4o mini](https://developers.openai.com/api/docs/models/gpt-4o-mini)
 - [OpenAI Chat Completions](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create)
 - [Streamlit AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest)
 
-Материалы прочитаны 23 сентября 2026 года. Локальные копии условий сохраняют исходную синтетическую постановку; приложение не загружает Google Docs при запуске.
+Materials were read on September 23, 2026. Local copies of the case conditions preserve the original synthetic setup; the application does not load Google Docs at startup.
