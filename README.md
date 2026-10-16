@@ -1,6 +1,10 @@
 # Mayor for 5 Hours · Astana Lab
 
-A Python and Streamlit web application for the HackAlem AI case: distribute **100 conditional units**, assess the consequences for five conditional districts, and receive an expert OpenAI report.
+**A Streamlit city-planning simulation for the HackAlem AI case.** Allocate 100 conditional units across five fictional district scenarios, compare outcomes, and optionally request an OpenAI analysis.
+
+[Quick start](#quick-start) · [Simulation modes](#two-modes) · [Methodology](astana_simulator/README.md) · [Geographic data](astana_simulator/data/README.md)
+
+The district indicators and policy effects are educational, synthetic data. The OpenAI report is optional; the simulation works without an API key.
 
 ## Game Situation Center
 
@@ -26,17 +30,7 @@ All following commands are executed inside this folder. This also ensures that i
 
 Tested on **Python 3.12.14**. Dependencies are pinned in `requirements.txt`; the full environment snapshot is in `requirements-lock.txt`.
 
-### In the prepared Windows working directory
-
-The local `.venv` environment has already been created. Run from the project root:
-
-```powershell
-.\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
-```
-
-Open <http://127.0.0.1:8501>. No keys are required for calculations and chart viewing.
-
-You can also run `python -m streamlit run app.py` from the `astana_simulator/` folder: this entry point launches the same interface. The repository root `app.py` belongs to another project and is not modified.
+Open <http://127.0.0.1:8501> after starting the app. No key is needed for calculations or charts. Run commands below from `astana_simulator/`; the repository root also contains a separate `app.py`.
 
 ### Fresh installation
 
